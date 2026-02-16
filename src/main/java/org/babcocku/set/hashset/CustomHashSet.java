@@ -8,9 +8,12 @@ public class CustomHashSet<T> {
     private LinkedList<T>[] buckets;
     private int capacity = 16;
 
+    @SuppressWarnings("unchecked")
     public CustomHashSet() {
         buckets = new LinkedList[capacity];
-        for (int i = 0; i < capacity; i++) buckets[i] = new LinkedList<>();
+        for (int i = 0; i < capacity; i++) {
+            buckets[i] = new LinkedList<>();
+        }
     }
 
     private int getIndex(T key) {
