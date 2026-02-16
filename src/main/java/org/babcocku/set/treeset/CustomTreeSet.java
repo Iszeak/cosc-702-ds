@@ -4,7 +4,9 @@ public class CustomTreeSet<T extends Comparable<T>> {
     private class Node {
         T data;
         Node left, right;
-        Node(T data) { this.data = data; }
+        Node(T data) { 
+            this.data = data; 
+        }
     }
 
     private Node root;
@@ -14,10 +16,15 @@ public class CustomTreeSet<T extends Comparable<T>> {
     }
 
     private Node addRecursive(Node current, T data) {
-        if (current == null) return new Node(data);
+        if (current == null) {
+            return new Node(data);
+        }
         int cmp = data.compareTo(current.data);
-        if (cmp < 0) current.left = addRecursive(current.left, data);
-        else if (cmp > 0) current.right = addRecursive(current.right, data);
+        if (cmp < 0) { 
+            current.left = addRecursive(current.left, data);
+        } else if (cmp > 0) {
+            current.right = addRecursive(current.right, data);
+        }
         return current;
     }
 
