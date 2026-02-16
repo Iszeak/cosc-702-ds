@@ -11,8 +11,9 @@ public class Main {
         studentIds.add(202);
         studentIds.add(101); // Attempting to add a duplicate
 
-        System.out.print("Sorted Student IDs: ");
-        studentIds.displaySorted();
-        // Output: 101 202 505 999
+        studentIds.displaySorted(); // 101 202 505 999
+
+        System.out.println(studentIds.contains(3)); // false
+        System.out.println(studentIds.size());      // 4
     }
 }
