@@ -29,15 +29,15 @@ public class CustomTreeSet<T extends Comparable<T>> {
     }
 
     public void displaySorted() {
-        inOrder(root);
+        inOrderTraversal(root);
         System.out.println();
     }
 
-    private void inOrder(Node node) {
+    private void inOrderTraversal(Node node) {
         if (node != null) {
-            inOrder(node.left);
+            inOrderTraversal(node.left);
             System.out.print(node.data + " ");
-            inOrder(node.right);
+            inOrderTraversal(node.right);
         }
     }
 }

@@ -1,35 +1,68 @@
 package org.babcocku.set.hashset;
 
 public class Main {
+
     public static void main(String[] args) {
+
         String[] fruits = {"Zebra", "Apple", "Mango", "Banana"};
 
-        // Test HashSet
         System.out.println("--- HashSet Test ---");
+
         CustomHashSet<String> hSet = new CustomHashSet<>();
-        for(String f : fruits) {
+
+        for (String f : fruits) {
             hSet.add(f);
         }
+
+        System.out.print("Elements: ");
+        printSet(hSet);
+
         System.out.println("Contains 'Mango'? " + hSet.contains("Mango"));
+        System.out.println("Size: " + hSet.size());
 
-
+        // Integer Sets
         CustomHashSet<Integer> setA = new CustomHashSet<>();
         CustomHashSet<Integer> setB = new CustomHashSet<>();
 
-        // Set A: {1, 2, 3}
-        setA.add(1); setA.add(2); setA.add(3);
+        // Set A
+        setA.add(1);
+        setA.add(6);
+        setA.add(3);
 
-        // Set B: {3, 4, 5}
-        setB.add(3); setB.add(4); setB.add(5);
+        // Set B
+        setB.add(3);
+        setB.add(4);
+        setB.add(5);
 
-        // Perform Union
+        System.out.print("\nSet A: ");
+        printSet(setA);
+
+        System.out.print("Set B: ");
+        printSet(setB);
+
+        // UNION
         CustomHashSet<Integer> unionResult = setA.union(setB);
-        System.out.println("Union (A + B): " + unionResult.getAllElements());
-        // Expected: [1, 2, 3, 4, 5]
+        System.out.print("Union (A + B): ");
+        printSet(unionResult);
 
-        // Perform Intersection
+        // INTERSECTION
         CustomHashSet<Integer> intersectResult = setA.intersection(setB);
-        System.out.println("Intersection (Common): " + intersectResult.getAllElements());
-        // Expected: [3]
+        System.out.print("Intersection (Common): ");
+        printSet(intersectResult);
+
+        // REMOVE DEMO
+        hSet.remove("Apple");
+        System.out.print("\nAfter removing Apple: ");
+        printSet(hSet);
+    }
+
+    // Manual printer (no Java utils)
+    private static <T> void printSet(CustomHashSet<T> set) {
+
+        System.out.print("[ ");
+
+        set.forEach(value -> System.out.print(value + " "));
+
+        System.out.println("]");
     }
 }

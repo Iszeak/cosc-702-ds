@@ -1,67 +1,142 @@
 package org.babcocku.set.hashset;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 public class CustomHashSet<T> {
-    private LinkedList<T>[] buckets;
-    private int capacity = 16;
+
+    private static final int DEFAULT_CAPACITY = 16;
+
+    private Node<T>[] table;
+    private int size = 0;
+
+    static class Node<T> {
+        T value;
+        Node<T> next;
+
+        Node(T value) {
+            this.value = value;
+        }
+    }
 
     @SuppressWarnings("unchecked")
     public CustomHashSet() {
-        buckets = new LinkedList[capacity];
-        for (int i = 0; i < capacity; i++) {
-            buckets[i] = new LinkedList<>();
+        table = new Node[DEFAULT_CAPACITY];
+    }
+
+    private int index(T key) {
+        return Math.abs(key.hashCode()) % table.length;
+    }
+
+    // ADD
+    public boolean add(T key) {
+
+        if (key == null)
+            throw new IllegalArgumentException("Null values not supported");
+
+        int idx = index(key);
+
+        Node<T> current = table[idx];
+
+        // Check duplicate
+        while (current != null) {
+            if (current.value.equals(key)) return false;
+            current = current.next;
         }
+
+        // Insert at bucket head
+        Node<T> node = new Node<>(key);
+        node.next = table[idx];
+        table[idx] = node;
+
+        size++;
+        return true;
     }
 
-    private int getIndex(T key) {
-        return Math.abs(key.hashCode()) % capacity;
-    }
-
-    public void add(T key) {
-        int index = getIndex(key);
-        if (!buckets[index].contains(key)) {
-            buckets[index].add(key);
-        }
-    }
-
+    // CONTAINS
     public boolean contains(T key) {
-        return buckets[getIndex(key)].contains(key);
-    }
 
-    // Helper to get all elements (needed for iteration)
-    public List<T> getAllElements() {
-        List<T> all = new ArrayList<>();
-        for (LinkedList<T> bucket : buckets) {
-            all.addAll(bucket);
+        int idx = index(key);
+
+        Node<T> current = table[idx];
+
+        while (current != null) {
+            if (current.value.equals(key)) return true;
+            current = current.next;
         }
-        return all;
+
+        return false;
     }
 
-    // UNION: Returns a new set containing elements from both sets
-    public CustomHashSet<T> union(CustomHashSet<T> otherSet) {
+    // REMOVE
+    public boolean remove(T key) {
+
+        int idx = index(key);
+
+        Node<T> current = table[idx];
+        Node<T> prev = null;
+
+        while (current != null) {
+
+            if (current.value.equals(key)) {
+
+                if (prev == null)
+                    table[idx] = current.next;
+                else
+                    prev.next = current.next;
+
+                size--;
+                return true;
+            }
+
+            prev = current;
+            current = current.next;
+        }
+
+        return false;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    // UNION
+    public CustomHashSet<T> union(CustomHashSet<T> other) {
+
         CustomHashSet<T> result = new CustomHashSet<>();
 
-        // Add all from this set
-        for (T item : this.getAllElements()) result.add(item);
-
-        // Add all from other set (duplicates are ignored automatically)
-        for (T item : otherSet.getAllElements()) result.add(item);
+        copyInto(result);
+        other.copyInto(result);
 
         return result;
     }
 
-    // INTERSECTION: Returns a new set with common elements
-    public CustomHashSet<T> intersection(CustomHashSet<T> otherSet) {
+    // INTERSECTION
+    public CustomHashSet<T> intersection(CustomHashSet<T> other) {
+
         CustomHashSet<T> result = new CustomHashSet<>();
 
-        for (T item : this.getAllElements()) {
-            if (otherSet.contains(item)) {
-                result.add(item);
+        forEach(value -> {
+            if (other.contains(value))
+                result.add(value);
+        });
+
+        return result;
+    }
+
+    // INTERNAL ITERATION (no utils)
+    public void forEach(Visitor<T> visitor) {
+        for (Node<T> bucket : table) {
+            Node<T> current = bucket;
+            while (current != null) {
+                visitor.visit(current.value);
+                current = current.next;
             }
         }
-        return result;
+    }
+
+    private void copyInto(CustomHashSet<T> target) {
+        forEach(target::add);
+    }
+
+    public interface Visitor<T> {
+        void visit(T value);
     }
 }
