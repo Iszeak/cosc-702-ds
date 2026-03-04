@@ -13,10 +13,8 @@ public class CustomLinkedHashSet<E> {
     static class Node<E> {
         E key;
 
-        // hash bucket chain
         Node<E> next;
 
-        // insertion order links
         Node<E> before;
         Node<E> after;
 
@@ -39,7 +37,6 @@ public class CustomLinkedHashSet<E> {
 
         Node<E> current = table[idx];
 
-        // Check duplicate
         while (current != null) {
             if (current.key.equals(key)) return false;
             current = current.next;
@@ -47,11 +44,9 @@ public class CustomLinkedHashSet<E> {
 
         Node<E> node = new Node<>(key);
 
-        // Insert into hash bucket
         node.next = table[idx];
         table[idx] = node;
 
-        // Maintain insertion order
         if (head == null) {
             head = tail = node;
         } else {
@@ -85,11 +80,9 @@ public class CustomLinkedHashSet<E> {
         while (current != null) {
             if (current.key.equals(key)) {
 
-                // Remove from bucket
                 if (prev == null) table[idx] = current.next;
                 else prev.next = current.next;
 
-                // Remove from linked order
                 if (current.before != null)
                     current.before.after = current.after;
                 else

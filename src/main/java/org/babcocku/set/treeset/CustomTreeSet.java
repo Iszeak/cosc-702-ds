@@ -14,11 +14,11 @@ public class CustomTreeSet<T extends Comparable<T>> {
     private Node root;
     private int size = 0;
 
-    // ADD
     public boolean add(T data) {
 
-        if (data == null)
+        if (data == null) {
             throw new IllegalArgumentException("Null not allowed");
+        }
 
         if (root == null) {
             root = new Node(data);
@@ -76,7 +76,6 @@ public class CustomTreeSet<T extends Comparable<T>> {
         return size;
     }
 
-    // DISPLAY SORTED
     public void displaySorted() {
         inOrderTraversal(root);
         System.out.println();

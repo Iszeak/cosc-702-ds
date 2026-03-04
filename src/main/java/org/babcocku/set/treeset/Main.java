@@ -4,16 +4,16 @@ public class Main {
     public static void main(String[] args) {
         CustomTreeSet<Integer> studentIds = new CustomTreeSet<>();
 
-        // Adding IDs in random order
+    
         studentIds.add(505);
         studentIds.add(101);
         studentIds.add(999);
         studentIds.add(202);
-        studentIds.add(101); // Attempting to add a duplicate
+        studentIds.add(101); 
 
-        studentIds.displaySorted(); // 101 202 505 999
+        studentIds.displaySorted();
 
-        System.out.println(studentIds.contains(3)); // false
-        System.out.println(studentIds.size());      // 4
+        System.out.println(studentIds.contains(3));
+        System.out.println(studentIds.size());
     }
 }
